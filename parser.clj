@@ -71,6 +71,12 @@
 
 (def number-lit (alt double-lit integer-lit))
 
+;;; test number-lit
+(are [given expected] (= (rule-match number-lit prn prn {:remainder given}) expected)
+     "1" 1
+     "1.0" 1.0)
+
+
 
 (def newline-lit (lit \n))
 
@@ -96,6 +102,7 @@
             _ string-delimiter]
            (-> contents apply-str)))
 
-(deftest test-string-lit
-  (is (= (run-p string-lit "'abc'") "abc"))
-  (is (= (run-p string-lit "''") "")))
+;;; test string-lit
+(are [given expected] (= (rule-match string-lit prn prn {:remainder given}) expected)
+     "'abc'" "abc"
+     "''" "")
