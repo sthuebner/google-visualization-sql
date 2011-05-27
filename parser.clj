@@ -106,3 +106,36 @@
 (are [given expected] (= (rule-match string-lit prn prn {:remainder given}) expected)
      "'abc'" "abc"
      "''" "")
+
+
+
+(def ws (rep+ (lit-alt-seq " \t\n\r")))
+
+;;; SELECT
+(def select-keyword (lit-conc-seq "select" lit))
+
+(def keyword (rep+ (lit-alt-seq "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_")))
+
+(def column-identifier identifier)
+
+(def select-item (conc (opt ws)
+                       (alt column-identifier)
+                       (opt ws)))
+
+(def select-items (conc (opt (rep+ (conc select-item (lit \,))))
+                        select-item))
+
+(def select-clause (conc select-keyword ws select-items))
+
+;;; TODO
+;;; - select-clause
+;;; - where-clause
+;;; - group-by-clause
+;;; - pivot-clause
+;;; - order-by-clause
+;;; - limit-clause
+;;; - offset-clause
+;;; - label-clause
+;;; - format-clause
+;;; - options-clause
+
